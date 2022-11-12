@@ -1,0 +1,109 @@
+/*Encontrar todas as Terras disponíveis ordenadas com base nos hectares*/
+SELECT * FROM Terra
+where idFamilia is null
+order by hectares ASC;
+
+/* Encontrar todas Terras disponíveis (Sem família)*/
+SELECT * 
+FROM Terra
+where idFamilia is null;
+
+/*Encontrar a região de uma terra */
+SELECT Regiao.* 
+FROM Regiao
+INNER JOIN Terra on Regiao.idRegiao = Terra.idRegiao
+where Terra.idTerra = 1;
+
+/*Encontrar a temperatura média e a precipitação anual de uma terra*/
+SELECT temperaturamedia, precipitacaoanual
+FROM Regiao
+INNER JOIN Terra on Terra.idRegiao = Regiao.idRegiao
+WHERE Terra.idTerra = 1;
+
+/*Seleciona os produtos produzidos por uma família*/
+SELECT Produto.idProduto, Produto.nome, Produto.temperaturaMinPlantio, Produto.temperaturaMaxPlantio, Produto.precoMedio
+from Produto
+inner JOIN FamiliaProduto on Produto.idProduto = FamiliaProduto.idProduto
+INNER join Familia on FamiliaProduto.idFamilia = Familia.idFamilia
+where Familia.idFamilia = 3;
+
+/*Seleciona as famílias com até 4 membros que produzem arroz*/
+SELECT FamiliaTamanho.idFamilia, FamiliaTamanho.nome, FamiliaTamanho.tamanho
+FROM (
+  SELECT Familia.idFamilia, Familia.nome, COUNT(Membro.idMembro) AS tamanho 
+  FROM Familia 
+  INNER JOIN Membro on Familia.idFamilia = Membro.idFamilia 
+  GROUP BY Familia.idFamilia
+) AS FamiliaTamanho
+INNER JOIN FamiliaProduto ON FamiliaTamanho.idFamilia = FamiliaProduto.idFamilia
+INNER JOIN Produto ON FamiliaProduto.idProduto = Produto.idProduto
+WHERE Produto.nome = "Arroz" and FamiliaTamanho.tamanho <= 4
+
+/*Seleciona famílias com mais de 4 membros que produzem Feijão-preto*/
+SELECT FamiliaTamanho.idFamilia, FamiliaTamanho.nome, FamiliaTamanho.tamanho
+FROM (
+  SELECT Familia.idFamilia, Familia.nome, COUNT(Membro.idMembro) AS tamanho 
+  FROM Familia 
+  INNER JOIN Membro on Familia.idFamilia = Membro.idFamilia 
+  GROUP BY Familia.idFamilia
+) as FamiliaTamanho
+INNER JOIN FamiliaProduto ON FamiliaTamanho.idFamilia = FamiliaProduto.idFamilia
+INNER JOIN Produto ON FamiliaProduto.idProduto = Produto.idProduto
+WHERE Produto.nome = "Feijao preto" and FamiliaTamanho.tamanho > 4
+
+/*Seleciona famílias que produzem arroz
+- pode-se parametrizar esta consulta para diferentes tipos de alimento*/
+SELECT Familia.idFamilia, Familia.nome  
+FROM Familia
+INNER JOIN FamiliaProduto ON Familia.idFamilia = FamiliaProduto.idFamilia
+INNER JOIN Produto ON FamiliaProduto.idProduto = Produto.idProduto
+WHERE Produto.nome = 'Arroz';
+
+/*Seleciona famílias que produzem Feijão-preto*/
+SELECT Familia.idFamilia, Familia.nome 
+FROM Familia
+INNER JOIN FamiliaProduto ON Familia.idFamilia = FamiliaProduto.idFamilia
+INNER JOIN Produto ON FamiliaProduto.idProduto = Produto.idProduto
+WHERE Produto.nome = 'Feijão preto';
+
+/*Seleciona as famílias que não possuem terra */
+SELECT Familia.idFamilia, Familia.nome
+FROM Familia
+LEFT JOIN Terra ON Terra.idFamilia = Familia.idFamilia
+WHERE idTerra IS NULL;
+
+/*Seleciona as terras que um agente está responsável*/
+SELECT Terra.*
+FROM Terra
+INNER JOIN Agente ON Terra.idAgente = Agente.idAgente
+WHERE Agente.nome = 'Ester Souza';
+
+/*Seleciona o nome, a temperatura máxima e minima de plantio de um produto*/
+SELECT Produto.nome, Produto.temperaturaMinPlantio, Produto.temperaturaMaxPlantio
+FROM Produto
+INNER JOIN ProdutoRegiao ON Produto.idProduto = ProdutoRegiao.idProduto
+INNER JOIN Regiao ON ProdutoRegiao.idRegiao = Regiao.idRegiao
+WHERE Regiao.nome = 'Regiao 2';
+
+/*Retorna a quantidade de produtos produzida por uma família*/
+SELECT Familia.nome, Producao.quantidade, Produto.nome, Familia.idFamilia
+FROM Producao
+INNER JOIN Familia ON Familia.idFamilia = Producao.idFamilia
+INNER JOIN Produto ON Produto.idProduto = Producao.idProduto
+WHERE Produto.nome = 'Arroz';
+
+/*Recupera o histórico de produção de uma terra*/
+SELECT Produto.nome, Producao.quantidade, Producao.data
+FRom Producao
+INNER JOIN Produto ON Produto.idProduto = Producao.idProduto
+WHERE Producao.idTerra = 44
+ORDER BY Producao.data;
+
+/*Retorna uma tabela de familias com um coluna informando se a familia possui terra*/
+SELECt Familia.idFamilia, Familia.nome,
+    CASE
+      WHEN Terra.idTerra IS NULL THEN true ELSE false
+    END AS temTerra
+FROM Familia
+LEFT JOIN Terra ON Terra.idFamilia = Familia.idFamilia
+
