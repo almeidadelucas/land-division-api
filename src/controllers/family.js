@@ -5,6 +5,7 @@ const listFamilies = async (req, res) => {
 		const families = await familyService.findAllFamilies();
 		res.status(200).json(families);
 	} catch (err) {
+        console.log(err)
 		res.status(500).json({ message: err.message });
 	}
 };
