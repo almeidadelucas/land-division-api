@@ -2,6 +2,8 @@ const { client } = require("../../redis-server");
 const { Land, Region } = require("../models");
 const { Op } = require("sequelize");
 
+const findById = (id) => Land.findByPk(id);
+
 const createNewLand = async (req_body) => {
     const data = await Land.create({
         state: req_body.state, 
@@ -27,14 +29,12 @@ const findAllLands = async () => {
     const data = await Land.findAll();
     
     if (data) {
-        await client.set("lands", JSON.stringify(data), {"EX": 10});
+        await client.set("lands", JSON.stringify(data));
         console.log("Content cached")
     }
     return data;
 
 }
-
-const findById = (id) => Land.findByPk(id);
 
 const findAllAvalibleLands = () =>
 	Land.findAll({
