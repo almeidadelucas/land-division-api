@@ -1,20 +1,41 @@
+const { client } = require("../../redis-server");
 const { Land, Region } = require("../models");
 const { Op } = require("sequelize");
 
-const createNewLand = (req_body) => Land.create({
-    "state": req_body.state, 
-    "regionId": req_body.regionId,
-    "city": req_body.city, 
-    "address": req_body.address,
-    "hectare": req_body.hectare
-    }
-);
+const createNewLand = async (req_body) => {
+    let data = await Land.create({
+        "state": req_body.state, 
+        "regionId": req_body.regionId,
+        "city": req_body.city, 
+        "address": req_body.address,
+        "hectare": req_body.hectare
+        }
+    );
 
-const findAllLands = () =>
-	Land.findAll({
-		attributes: ["state", "city", "address", "hectare"],
-	}
-);
+    await client.del("lands")
+    console.log("Cache cleared")
+    return data
+}
+
+const findAllLands = async () => {
+    const result = await client.get("lands");
+    if (result) {
+        console.log("Result returned by redis")
+        return JSON.parse(result)
+    }
+
+    let data = await Land.findAll({
+            attributes: ["state", "city", "address", "hectare"],
+        }
+    );
+    
+    if (data) {
+        await client.set("lands", JSON.stringify(data));
+        console.log("Content cached")
+    }
+    return data;
+
+}
 
 const findAllAvalibleLands = () =>
 	Land.findAll({
