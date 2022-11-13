@@ -31,5 +31,5 @@ services:
       - |
         ./wait-for-mysql.sh mysql:3306 -- npx sequelize-cli db:create 
         npx sequelize-cli db:migrate
-        npx sequelize-cli db:create 
+        npx sequelize-cli db:seed:all 
         npm start
