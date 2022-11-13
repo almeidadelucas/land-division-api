@@ -6,11 +6,19 @@ const router = express.Router();
 //cria uma nova terra no banco de dados
 router.post("/", landsController.createNewLand);
 
+router.delete("/:id", landsController.deleteLand);
+
+//atualiza uma terra
+router.put("/:id", landsController.updateLand);
+
 //retorna todas terras vazias
 router.get("/empty", landsController.listEmptyLands);
 
 //retorna todas terras
 router.get("/", landsController.listLands);
+
+// retorna uma terra por id
+router.get("/:id", landsController.getLandById);
 
 /*  Retorna a região de uma terra que tem o id passado na url
 
@@ -42,6 +50,9 @@ router.get("/:id/region", landsController.regionLand);
     }
 }
 */
-router.get("/:id/precipitationAndTemperature", landsController.precipitationAndTemperature);
+router.get(
+	"/:id/precipitationAndTemperature",
+	landsController.precipitationAndTemperature
+);
 
 module.exports = router;
