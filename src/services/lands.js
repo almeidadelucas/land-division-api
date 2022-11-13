@@ -36,6 +36,8 @@ const findAllLands = async () => {
 
 }
 
+const findById = (id) => Land.findByPk(id);
+
 const findAllAvalibleLands = () =>
 	Land.findAll({
 		attributes: ["state", "city", "address", "hectare"],
