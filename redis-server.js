@@ -13,15 +13,6 @@ client.on("error", (error) => {
         console.error(error);
 });
 
-// const getRedisAsync = async (key) => {
-//    const value = await redisClient.get(key);
-//    return value;
-// };
-
-// const setRedisAsync = async (key, value) => {
-//    await redisClient.set(key, value);
-// };
-
 console.log("Connected to redis server")
 
 module.exports = {
