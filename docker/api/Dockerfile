@@ -1,14 +1,12 @@
-FROM node:19-alpine3.15
+FROM node:alpine
 WORKDIR /app
 COPY . .
 
-RUN apk add mysql-client
-RUN ./wait-for-mysql.sh
 RUN npm i
-# RUN npx sequelize-cli db:create
-# RUN npx sequelize-cli db:migrate
-# RUN npx sequelize-cli db:seed:all
-
+#RUN ./wait-for-mysql.sh mysqldb:3306 -- npx sequelize-cli db:create && \
+#                                          npx sequelize-cli db:migrate && \
+#                                          npx sequelize-cli db:seed:all
+#
 EXPOSE 3000/tcp
 
-ENTRYPOINT [ "npm", "start" ]
+# ENTRYPOINT [ "npm", "start" ]
