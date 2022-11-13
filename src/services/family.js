@@ -7,9 +7,7 @@ const findAllFamilies = async () => {
         console.log("Result returned by redis")
         return JSON.parse(result)
     }
-
-	const data = await Family.findAll({
-		attributes: ["id", "name"],
+	const data = Family.findAll({
 		include: [{ model: Member, as: "fkMemberFamily" }],
 	});
     
