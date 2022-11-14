@@ -1,0 +1,39 @@
+version: "2.2"
+services:
+  mysql:
+    image: "mysql:latest"
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: root
+    restart: on-failure
+  redis:
+    image: "redis"
+    ports:
+      - 6379:6379
+    restart: on-failure
+  web:
+    build: 
+      context: .
+    ports:
+      - 3000:3000
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      DB_DATABASE: lands_division_db
+      DB_HOST: mysql
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - mysql
+      - redis
+    command:
+      - /bin/sh
+      - -c 
+      - |
+        ./wait-for.sh -t 30 mysql:3306 -- npx sequelize-cli db:create 
+        npx sequelize-cli db:migrate
+        npx sequelize-cli db:seed:all 
+        npm start
+    restart: on-failure
