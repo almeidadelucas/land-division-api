@@ -29,7 +29,7 @@ const findAllLands = async () => {
     const data = await Land.findAll();
     
     if (data) {
-        await client.set("lands", JSON.stringify(data));
+        await client.set("lands", JSON.stringify(data), {"EX": 10});
         console.log("Content cached")
     }
     return data;
