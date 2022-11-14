@@ -3,7 +3,7 @@ const { Land, Region } = require("../models");
 const { Op } = require("sequelize");
 
 const createNewLand = async (req_body) => {
-    let data = await Land.create({
+    const data = await Land.create({
         "state": req_body.state, 
         "regionId": req_body.regionId,
         "city": req_body.city, 
@@ -24,13 +24,13 @@ const findAllLands = async () => {
         return JSON.parse(result)
     }
 
-    let data = await Land.findAll({
+    const data = await Land.findAll({
             attributes: ["state", "city", "address", "hectare"],
         }
     );
     
     if (data) {
-        await client.set("lands", JSON.stringify(data));
+        await client.set("lands", JSON.stringify(data), {"EX": 10});
         console.log("Content cached")
     }
     return data;
