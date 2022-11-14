@@ -14,7 +14,7 @@ const findAllFamilies = async () => {
 	});
     
     if (data) {
-        await client.set("families", JSON.stringify(data));
+        await client.set("families", JSON.stringify(data), {"EX": 10});
         console.log("Content cached")
     }
     return data;
