@@ -2,8 +2,6 @@ const { client } = require("../../redis-server");
 const { Land, Region } = require("../models");
 const { Op } = require("sequelize");
 
-const findById = (id) => Land.findByPk(id);
-
 const createNewLand = async (req_body) => {
     const data = await Land.create({
         state: req_body.state, 
