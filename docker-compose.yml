@@ -32,7 +32,7 @@ services:
       - /bin/bash
       - -c 
       - |
-        ./wait-for-it.sh -t 30 mysql:3306 -- npx sequelize-cli db:create 
+        ./wait-for-it.sh -t 60 mysql:3306 -- npx sequelize-cli db:create 
         npx sequelize-cli db:migrate
         npx sequelize-cli db:seed:all 
         npm start

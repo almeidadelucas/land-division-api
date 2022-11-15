@@ -1,8 +1,7 @@
-FROM node:19-alpine3.15
+FROM node:19-bullseye
 WORKDIR /app
 COPY . .
 
-RUN apk add bash
 RUN npm i
 
 EXPOSE 3000/tcp
