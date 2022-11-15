@@ -2,8 +2,8 @@
 
 ## Pre requisitos:
 
-- Node 14;
-- Mysql;
+- Docker
+- Docker Compose
 
 ## Rodando a Aplicação
 
