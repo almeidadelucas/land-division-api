@@ -1,5 +1,5 @@
 const express = require("express");
-const productionController = require("../controllers/productionHistory");
+const productionController = require("../controllers/production");
 
 const router = express.Router();
 
