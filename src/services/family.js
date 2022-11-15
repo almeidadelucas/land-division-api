@@ -8,13 +8,7 @@ const findAllFamilies = async () => {
         return JSON.parse(result)
     }
 
-	const data = await Family.findAll({
-		attributes: ["id", "name"],
-		include: [
-			{ model: Member, as: "fkMemberFamily", attributes: ["id", "name"] },
-		],
-	});
-    
+	const data = await Family.findAll();
     if (data) {
         await client.set("families", JSON.stringify(data), {"EX": 10});
         console.log("Content cached")
