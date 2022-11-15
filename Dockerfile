@@ -1,6 +1,9 @@
-FROM node:19-bullseye
+FROM node:19-alpine3.15
+
 WORKDIR /app
 COPY . .
+
+RUN apk add bash
 
 RUN npm i
 
