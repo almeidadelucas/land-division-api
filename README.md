@@ -23,3 +23,11 @@ docker-compose up
 ```
 
 Assim, dentro de instantes, a aplicação será acessível em http://127.0.0.1:3000
+
+## Testando a aplicação
+
+1 - Instale o Postman. [Postman](https://www.postman.com/).
+
+2 - No postman importe o arquivo Testes.json que está na pasta principal do projeto.
+    
+3 - Teste os endpoints desejados.
