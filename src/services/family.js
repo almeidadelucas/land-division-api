@@ -7,10 +7,8 @@ const findAllFamilies = async () => {
         console.log("Result returned by redis")
         return JSON.parse(result)
     }
-	const data = await Family.findAll({
-		include: [{ model: Member, as: "fkMemberFamily" }],
-	});
     
+	const data = await Family.findAll();
     if (data) {
         await client.set("families", JSON.stringify(data), {"EX": 10});
         console.log("Content cached")
@@ -32,5 +30,5 @@ const createNewFamily = async (req_body) => {
 
 module.exports = {
 	findAllFamilies,
-    createNewFamily
+  createNewFamily
 }
