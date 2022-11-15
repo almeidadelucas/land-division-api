@@ -18,7 +18,19 @@ const findAllFamilies = async () => {
     return data;
 };
 
+const createNewFamily = async (req_body) => {
+    const data = await Family.create({
+        name: req_body.name,
+        chosenState: req_body.chosenState,
+        monthlyIncome: req_body.monthlyIncome,
+    });
+
+    await client.del("families")
+    console.log("Cache cleared")
+    return data
+}
 
 module.exports = {
 	findAllFamilies,
+    createNewFamily
 }
